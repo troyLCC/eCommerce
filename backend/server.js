@@ -1,8 +1,9 @@
 const app = require("./app");
+//returning console log saying the db is connected
 const connectDatabase = require("./config/database");
 const dotenv = require("dotenv");
 
-//setting up config file
+//gives us access to port, mongoURI and something else ...
 dotenv.config({ path: "backend/config/config.env" });
 
 //connecting to database
