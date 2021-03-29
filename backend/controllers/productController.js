@@ -10,10 +10,30 @@ exports.newProduct = async (req, res, next) => {
     product,
   });
 };
+//Get all products => /api/v1/products
+exports.getProducts = async (req, res, next) => {
+  const products = await Product.find();
 
-exports.getProducts = (req, res, next) => {
   res.status(200).json({
     success: true,
-    message: "This route will show all products in DB",
+    count: products.length,
+    products,
   });
+};
+
+//get single product => /api/v1/product/:id
+exports.getSingleProduct = async (req, res, next) => {
+  const product = await Product.findById(req.params.id);
+
+  if (!product) {
+    return res.status(404).json({
+      success: false,
+      message: "Product not dound",
+    });
+  }
+  res.status(200).json({
+    success: true,
+    product,
+  });
+  console.log("Hello from controller");
 };
