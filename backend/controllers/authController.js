@@ -3,6 +3,7 @@ const express = require("express");
 const ErrorHandler = require("../utils/errorhandler");
 
 const catchAsyncError = require("../middlewares/catchAsyncError");
+const sendToken = require("../utils/jwtToken");
 
 exports.registerUser = catchAsyncError(async (req, res, next) => {
   const { name, email, password } = req.body;
@@ -16,12 +17,7 @@ exports.registerUser = catchAsyncError(async (req, res, next) => {
         "http://res.cloudinary.com/shopit/imgae/upload/v1606305757/avatars/kccvibsuiusmwfepb3m.png",
     },
   });
-  const token = user.getJwtToken();
-  res.status(201).json({
-    success: true,
-    user,
-    token,
-  });
+  sendToken(user, 200, res);
 });
 
 //Login user => /api/v1/login
@@ -44,9 +40,5 @@ exports.loginUser = catchAsyncError(async (req, res, next) => {
   if (!isPasswordMatched) {
     return next(new ErrorHandler("Invalid Email or Password", 401));
   }
-  const token = user.getJwtToken();
-  res.status(200).json({
-    success: true,
-    token,
-  });
+  sendToken(user, 200, res);
 });
