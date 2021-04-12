@@ -105,3 +105,37 @@ exports.getUserDetails = catchAsyncError(async (req, res, next) => {
     user,
   });
 });
+
+//update user profile => /api/v1/admin/user/:id
+exports.updateUser = catchAsyncError(async (req, res, next) => {
+  const newUserData = {
+    name: req.body.name,
+    email: req.body.email,
+    role: req.body.role,
+  };
+  //update avatar : ToDo
+  const user = await User.findByIdAndUpdate(req.params.id, newUserData, {
+    runValidators: true,
+    useFindAndModify: false,
+  });
+  res.status(200).json({
+    success: true,
+  });
+});
+
+//delete user info
+exports.deleteUserDetails = catchAsyncError(async (req, res, next) => {
+  const user = await User.findById(req.params.id);
+
+  if (!user) {
+    return next(
+      new ErrorHandler(`User does not found with if: ${req.params.id}`)
+    );
+  }
+  //remove avatar from clounary
+  await user.remove();
+  res.status(200).json({
+    success: true,
+    user,
+  });
+});
