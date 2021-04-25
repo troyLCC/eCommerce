@@ -14,9 +14,9 @@ const {
 
 const { isAuthenticatedUser, athorizeRoles } = require("../middlewares/auth");
 
-router
-  .route("/products")
-  .get(isAuthenticatedUser, athorizeRoles("admin"), getProducts);
+// router
+//   .route("/products")
+//   .get(isAuthenticatedUser, athorizeRoles("admin"), getProducts);
 
 router.route("/products").get(getProducts);
 router.route("/product/:id").get(getSingleProduct);
